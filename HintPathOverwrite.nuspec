@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>HintPathOverwrite</id>
+    <version>1.0.6</version>
+    <authors>Dave Senn</authors>
+    <owners>Dave Senn</owners>
+  <projectUrl>https://github.com/DaveSenn/HintPathOverwrite</projectUrl>
+  <licenseUrl>https://raw.github.com/DaveSenn/HintPathOverwrite/master/License.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Overwrites reference HintPath values during build.</description>
+    <copyright>Copyright 2015</copyright>
+  </metadata>
+  <files>
+  <file src="content\HintPathOverwrite.targets" target="content" />
+  <file src="tools\install.ps1" target="tools" />
+  <file src="tools\uninstall.ps1" target="tools" />
+  </files>
+</package>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup Condition="$(PackagesDirectoryAbsolute) == ''">
+    <SourceDrive>$([System.IO.Path]::GetPathRoot( $(SolutionDir)))</SourceDrive>
+    <PackagesDirectoryAbsolute>$([System.IO.Path]::Combine($(SourceDrive), '_git\_GlobalPackages'))</PackagesDirectoryAbsolute>
+  </PropertyGroup>
+  
+  <Target Name="HintPathOverwrite" BeforeTargets="ResolveAssemblyReferences">
+    <Message Text="PackagesDirectoryAbsolute: $(PackagesDirectoryAbsolute)"></Message>
+    <PropertyGroup Condition="$(HintPathPackageDirPattern) == ''">
+      <HintPathPackageDirPattern>(?i)^(.+\\)?_GlobalPackages\\</HintPathPackageDirPattern>
+    </PropertyGroup>
+           
+    <ItemGroup>
+      <NewPackageReference Include="@(Reference)" Condition=" '%(Reference.HintPath)' != '' and '$([System.Text.RegularExpressions.Regex]::IsMatch(%(Reference.HintPath), $(HintPathPackageDirPattern)))' == 'true' ">
+        <HintPath>$([System.IO.Path]::Combine($(PackagesDirectoryAbsolute), $([System.Text.RegularExpressions.Regex]::Replace(%(Reference.HintPath), $(HintPathPackageDirPattern), ''))))</HintPath>
+      </NewPackageReference>
+
+      <Reference Remove="@(Reference)" Condition=" '%(Reference.HintPath)' != '' and '$([System.Text.RegularExpressions.Regex]::IsMatch(%(Reference.HintPath), $(HintPathPackageDirPattern)))' == 'true' " />
+      <Reference Include="@(NewPackageReference)" />    
+    </ItemGroup>
+  </Target>
+  
+</Project>
