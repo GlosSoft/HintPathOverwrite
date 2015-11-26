@@ -1,12 +1,12 @@
 param($installPath, $toolsPath, $package, $project)
+ 
+# Need to load MSBuild assembly if it’s not loaded yet.
+Add-Type -AssemblyName ‘Microsoft.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a’
 
-Write-Host "You need to remove the target from the project!"
-<#
-$project = Get-Project
-$projectPath = $project.FullName;
-$projectContent = [IO.File]::ReadAllText($projectPath)
-$projectContent = $projectContent.Replace('<Import Project="HintPathOverwrite.targets" />', '');
+# Grab the loaded MSBuild project for the project
+$msbuild = [Microsoft.Build.Evaluation.ProjectCollection]::GlobalProjectCollection.GetLoadedProjects($project.FullName) | Select-Object -First 1
+$importToRemove = $msbuild.Xml.Imports | Where-Object { $_.Project.Endswith(‘HintPathOverwrite.targets’) }
 
-$Project.Save()
-$projectContent = [IO.File]::WriteAllText($projectPath, $projectContent)
-#>
+# Add the import and save the project
+$msbuild.Xml.RemoveChild($importToRemove) | out-null
+$project.Save()

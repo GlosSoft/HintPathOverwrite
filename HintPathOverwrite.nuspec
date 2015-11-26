@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>HintPathOverwrite</id>
-    <version>1.0.6</version>
+    <version>1.1.0</version>
     <authors>Dave Senn</authors>
     <owners>Dave Senn</owners>
   <projectUrl>https://github.com/DaveSenn/HintPathOverwrite</projectUrl>
